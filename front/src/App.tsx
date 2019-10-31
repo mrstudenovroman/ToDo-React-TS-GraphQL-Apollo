@@ -1,7 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
+import { ApolloProvider } from "@apollo/react-hooks";
 import { createGlobalStyle } from "styled-components";
 import { hot } from "react-hot-loader/root";
-import styled from "styled-components";
+
+import { client } from "./client";
+import Task from "Components/Task";
 
 const InjectGlobalStyle = createGlobalStyle`
     body {
@@ -10,18 +13,13 @@ const InjectGlobalStyle = createGlobalStyle`
     }
 `;
 
-const Test = styled.h1`
-  margin: 50vh auto 0 auto;
-  text-align: center;
-`;
-
 class App extends React.Component {
   render() {
     return (
-      <Fragment>
+      <ApolloProvider client={client}>
         <InjectGlobalStyle />
-        <Test>Не спать!</Test>
-      </Fragment>
+        <Task />
+      </ApolloProvider>
     );
   }
 }

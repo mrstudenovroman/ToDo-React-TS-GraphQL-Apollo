@@ -97,7 +97,8 @@ module.exports = {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
     modules: [
       path.resolve(__dirname, "node_modules"),
-      path.resolve(__dirname, "./")
+      path.resolve(__dirname, "./"),
+      path.resolve(__dirname, "./src")
     ]
   },
   performance: {

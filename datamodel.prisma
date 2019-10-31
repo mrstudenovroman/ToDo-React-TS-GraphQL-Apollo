@@ -1,0 +1,11 @@
+type User {
+  id: ID! @id
+  name: String!
+}
+
+type Task {
+  id: ID! @id
+  title: String!
+  priority: Float!
+  deadline: DateTime!
+}

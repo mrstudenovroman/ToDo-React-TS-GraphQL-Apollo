@@ -1,0 +1,1 @@
+prerequisites: docker pricma cli

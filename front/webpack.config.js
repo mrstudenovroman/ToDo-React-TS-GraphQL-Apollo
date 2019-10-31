@@ -4,6 +4,7 @@ const autoprefixer = require("autoprefixer");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const PostCSSFlexBugsFixes = require("postcss-flexbugs-fixes");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const getTransformer = require("ts-transform-graphql-tag").getTransformer;
 
 const paths = require("./paths");
 
@@ -36,7 +37,10 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
+        loader: "awesome-typescript-loader",
+        options: {
+          getCustomTransformers: () => ({ before: [getTransformer()] })
+        }
       },
       {
         test: /\.(graphql|gql)$/,

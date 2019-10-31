@@ -39,6 +39,11 @@ module.exports = {
         loader: "awesome-typescript-loader"
       },
       {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: "graphql-tag/loader"
+      },
+      {
         test: [/\.jpe?g$/, /\.gif$/, /\.png$/],
         loader: require.resolve("url-loader"),
         options: {

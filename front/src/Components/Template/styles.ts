@@ -5,7 +5,7 @@ export const WrapperStyled = styled.div`
   display: flex;
   flex-shrink: 0;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 30px;
   border-radius: 4px;
@@ -39,7 +39,7 @@ export const InputStyled = styled.input`
 `;
 
 export const ButtonStyled = styled.button`
-  width: 200px;
+  width: 250px;
   height: 40px;
   margin: 10px 0 0 0;
   outline: none;

@@ -30,4 +30,5 @@ export const ContentStyled = styled.div`
   justify-items: center;
   align-content: center;
   padding: 0 20px;
+  margin: 0 0 50px 0;
 `;

@@ -2,6 +2,7 @@ query getTasks($where: TaskWhereInput $orderBy: TaskOrderByInput $skip: Int $aft
   tasks(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
     id
     deadline
+    priority
     title
   }
 }

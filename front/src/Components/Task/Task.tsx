@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {useQuery} from "@apollo/react-hooks";
+import { useQuery } from "@apollo/react-hooks";
 
 import GET_TASK from "./graphql/getTask.gql";
 
@@ -16,11 +16,7 @@ function Task(): JSX.Element {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>ERROR: {error.message}</p>;
 
-  return (
-      <StyledContainer>
-          {data.task.id && data.task.title}
-      </StyledContainer>
-  );
+  return <StyledContainer>{data.task.id && data.task.title}</StyledContainer>;
 }
 
 export default Task;

@@ -1,25 +1,42 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 
 import { WrapperStyled, TitleStyled, TextStyled, ButtonStyled } from "./styles";
+import { TaskCardProps } from "./types";
+import { useMutation } from "@apollo/react-hooks";
 
-function TaskCard() {
-  const changeTask = useCallback(() => console.log("change"), []);
-  const deleteTask = useCallback(() => console.log("delete"), []);
+import DELETE_TASK from "../Task/graphql/deleteTask.gql";
+import GET_TASKS from "../Task/graphql/getTasks.gql";
+
+function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
+  const [deleteTask] = useMutation(DELETE_TASK, {
+    update(cache, { data: { deleteTask } }) {
+      //  @ts-ignore
+      const { tasks } = cache.readQuery({ query: GET_TASKS });
+      cache.writeQuery({
+        query: GET_TASKS,
+        //  @ts-ignore
+        data: { tasks: tasks.filter(({ id }) => id !== deleteTask.id) }
+      });
+    }
+  });
+
+  const handleChangeTask = useCallback(() => console.log("change"), []);
+  const handleDeleteTask = useCallback(() => {
+    deleteTask({ variables: { where: { id } } });
+  }, []);
+
   return (
     <WrapperStyled>
       <TitleStyled>Название</TitleStyled>
-      <TextStyled>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sunt laboriosam neque obcaecati minima blanditiis explicabo
-        vero nobis dolorum id, rerum nemo, magnam eius, aspernatur iusto quo deleniti eos architecto sequi!
-      </TextStyled>
+      <TextStyled>{title}</TextStyled>
       <TitleStyled>Приоритет</TitleStyled>
-      <TextStyled>1</TextStyled>
+      <TextStyled>{priority}</TextStyled>
       <TitleStyled>Дедлайн</TitleStyled>
-      <TextStyled>Дата</TextStyled>
-      <ButtonStyled type="button" onClick={changeTask}>
+      <TextStyled>{deadline}</TextStyled>
+      <ButtonStyled type="button" onClick={handleChangeTask}>
         Редактировать задачу
       </ButtonStyled>
-      <ButtonStyled type="button" onClick={deleteTask}>
+      <ButtonStyled type="button" onClick={handleDeleteTask}>
         Удалить задачу
       </ButtonStyled>
     </WrapperStyled>

@@ -23,9 +23,12 @@ const InjectGlobalStyle = createGlobalStyle`
 function App() {
   const [mainTheme, themeToggle] = useState(false);
 
-  const handleTheme = useCallback(() => {
-    themeToggle(!mainTheme);
-  }, [mainTheme]);
+  const handleTheme = useCallback(
+    () => {
+      themeToggle(!mainTheme);
+    },
+    [mainTheme],
+  );
 
   return (
     <ThemeProvider theme={mainTheme ? defaultTheme : secondatyTheme}>
@@ -33,7 +36,6 @@ function App() {
         <InjectGlobalStyle />
         <SwitchBtn handleClick={handleTheme} />
         <Layout />
-        Theme toggle
       </ApolloProvider>
     </ThemeProvider>
   );

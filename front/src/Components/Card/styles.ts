@@ -21,27 +21,19 @@ export const TitleStyled = styled.h3`
   text-align: left;
 `;
 
-export const InputStyled = styled.input`
+export const TextStyled = styled.p`
   width: 100%;
-  height: 40px;
   margin: 0 0 15px 0;
   padding: 5px 5px 0 5px;
-  border: none;
-  outline: none;
-  border-bottom: 2px solid #bbbbbb;
   font-size: 18px;
   color: #16273a;
-
-  &:hover,
-  &:focus {
-    border-bottom: 2px solid rgba(59, 178, 184, 0.55);
-  }
+  text-align: left;
 `;
 
 export const ButtonStyled = styled.button`
   width: 250px;
   height: 40px;
-  margin: 10px 0 0 0;
+  margin: 10px 0;
   outline: none;
   border: none;
   border-radius: 32px;

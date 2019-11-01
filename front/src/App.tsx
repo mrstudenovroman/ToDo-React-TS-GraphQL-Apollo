@@ -4,11 +4,15 @@ import { createGlobalStyle } from "styled-components";
 import { hot } from "react-hot-loader/root";
 
 import { client } from "./client";
-import Task from "Components/Task";
+import Layout from "Components";
 
 const InjectGlobalStyle = createGlobalStyle`
+    * {
+      box-sizing: border-box;
+      font-family: Rubik, sans-serif;
+    }
+
     body {
-        font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         margin: 0;
     }
 `;
@@ -18,7 +22,7 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <InjectGlobalStyle />
-        <Task />
+        <Layout />
       </ApolloProvider>
     );
   }

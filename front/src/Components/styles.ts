@@ -10,8 +10,16 @@ export const LayoutStyled = styled.div`
 `;
 
 export const HeaderStyled = styled.header`
-  display: flex;
+  display: grid;
   grid-area: Header;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 20px;
+  justify-items: center;
+  align-content: center;
+`;
+
+export const WrapperButtonStyled = styled.div`
+  display: flex;
   justify-content: center;
   align-items: center;
 `;

@@ -5,7 +5,6 @@ import { hot } from 'react-hot-loader/root';
 import { secondatyTheme, defaultTheme } from 'themes';
 
 import Layout from 'Components';
-import SwitchBtn from 'Components/SwitchButton';
 
 import { client } from './client';
 
@@ -34,8 +33,7 @@ function App() {
     <ThemeProvider theme={mainTheme ? defaultTheme : secondatyTheme}>
       <ApolloProvider client={client}>
         <InjectGlobalStyle />
-        <SwitchBtn handleClick={handleTheme} />
-        <Layout />
+        <Layout handleTheme={handleTheme} />
       </ApolloProvider>
     </ThemeProvider>
   );

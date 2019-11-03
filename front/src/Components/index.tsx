@@ -2,29 +2,33 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import GET_TASKS from './gql/getTasks.gql';
+import SwitchBtn from './SwitchButton';
 import Template from './Template';
 import TaskCard from './Card';
-import { TaskCardProps } from './Card/types';
-import { LayoutStyled, HeaderStyled, TitleStyled, ContentStyled } from './styles';
+import { LayoutStyled, HeaderStyled, WrapperButtonStyled, TitleStyled, ContentStyled } from './styles';
+import { LayoutProps, TasksQueryProps } from './types';
 
-function Layout() {
-  const { data, loading, error } = useQuery(GET_TASKS);
+function Layout({ handleTheme }: LayoutProps) {
+  const { data, loading, error } = useQuery<TasksQueryProps>(GET_TASKS);
 
   if (loading) return <div>...loading</div>;
   if (error) return <p>ERROR: {error.message}</p>;
 
-  const { tasks = [] } = data;
-
   return (
     <LayoutStyled>
       <HeaderStyled>
+        <WrapperButtonStyled>
+          <SwitchBtn handleClick={handleTheme} />
+          <span>Сменить цвет</span>
+        </WrapperButtonStyled>
         <TitleStyled>YATL</TitleStyled>
       </HeaderStyled>
       <ContentStyled>
         <Template />
-        {tasks.map(({ id, deadline, title, priority }: TaskCardProps) => (
-          <TaskCard key={id} id={id} deadline={deadline} priority={priority} title={title} />
-        ))}
+        {data &&
+          data.tasks.map(({ id, deadline, title, priority }) => (
+            <TaskCard key={id} id={id} deadline={deadline} priority={priority} title={title} />
+          ))}
       </ContentStyled>
     </LayoutStyled>
   );

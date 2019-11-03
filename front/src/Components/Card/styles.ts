@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const WrapperStyled = styled.div`
   width: 360px;
@@ -17,7 +17,7 @@ export const TitleStyled = styled.h3`
   margin: 0 0 5px 0;
   font-size: 13px;
   font-weight: 400;
-  color: #3bb2b8;
+  color: ${({ theme }) => theme.color || '#3bb2b8'};
   text-align: left;
 `;
 
@@ -38,7 +38,7 @@ export const ButtonStyled = styled.button`
   border: none;
   border-radius: 32px;
   box-shadow: 0 -2px 10px 0 rgba(59, 178, 184, 0.55);
-  background-image: linear-gradient(110deg, #43e695 -49%, #3bb2b8 75%);
+  background-image: ${({ theme }) => theme.backgroundPrimary || 'linear-gradient(110deg, #43e695 -49%, #3bb2b8 75%)'};
   font-size: 18px;
   color: #ffffff;
 
@@ -46,6 +46,7 @@ export const ButtonStyled = styled.button`
   }
 
   &:active {
-    background-image: linear-gradient(110deg, #3bb2b8 -49%, #43e695 75%);
+    background-image: ${({ theme }) =>
+      theme.backgroundSecondary || 'linear-gradient(110deg, #3bb2b8 -49%, #43e695 75%)'};
   }
 `;

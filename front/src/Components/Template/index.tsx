@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
+import { formattingDate } from 'helpers';
 import CREATE_TASK from './gql/createTask.gql';
 
 import { WrapperStyled, TitleStyled, InputStyled, ButtonStyled } from './styles';
@@ -38,7 +39,7 @@ function Template() {
       <TitleStyled>Приоритет</TitleStyled>
       <InputStyled type="number" value={priority} onChange={({ target }) => setPriority(target.value)} />
       <TitleStyled>Дедлайн</TitleStyled>
-      <InputStyled type="date" value={date} onChange={({ target }) => setDate(target.value)} />
+      <InputStyled type="date" value={date} onChange={({ target }) => setDate(formattingDate(target.value))} />
       <ButtonStyled type="button" onClick={handleChange}>
         Создать задачу
       </ButtonStyled>

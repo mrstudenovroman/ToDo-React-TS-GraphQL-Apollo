@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 
+import { formattingDate } from 'helpers';
 import UPDATE_TASK from './gql/updateTask.gql';
 import DELETE_TASK from './gql/deleteTask.gql';
 
@@ -13,15 +14,16 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
     variables: { where: { id } },
     refetchQueries: ['getTasks'],
   });
+  const formatDate = formattingDate(deadline);
 
   const [isChangeTask, setChangeTask] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newPriority, setNewPriority] = useState(priority);
-  const [newDeadline, setNewDeadLine] = useState(deadline);
+  const [newDeadline, setNewDeadLine] = useState(formatDate);
 
   const handleChangeTask = useCallback(
-    () => {
-      updateTask({
+    async () => {
+      await updateTask({
         variables: {
           where: { id },
           data: {
@@ -30,7 +32,8 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
             deadline: newDeadline,
           },
         },
-      }).then(() => setChangeTask(false));
+      });
+      setChangeTask(false);
     },
     [newTitle, newPriority, newDeadline],
   );
@@ -54,9 +57,13 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
       )}
       <TitleStyled>Дедлайн</TitleStyled>
       {isChangeTask ? (
-        <InputStyled type="date" value={newDeadline} onChange={({ target }) => setNewDeadLine(target.value)} />
+        <InputStyled
+          type="date"
+          value={newDeadline}
+          onChange={({ target }) => setNewDeadLine(formattingDate(target.value))}
+        />
       ) : (
-        <TextStyled>{deadline}</TextStyled>
+        <TextStyled>{formatDate}</TextStyled>
       )}
       {isChangeTask ? (
         <ButtonStyled type="button" onClick={handleChangeTask}>

@@ -1,10 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import Template from "./Template";
-import TaskCard from "./Card";
-import { LayoutStyled, HeaderStyled, TitleStyled, ContentStyled } from "./styles";
+import { LayoutStyled, HeaderStyled, TitleStyled, ContentStyled } from './styles';
 
-function Layout() {
+import Template from './Template';
+import TaskCard from './Card';
+
+function Layout(): JSX.Element {
   const arr = [<TaskCard />, <TaskCard />, <TaskCard />, <TaskCard />, <TaskCard />];
   return (
     <LayoutStyled>

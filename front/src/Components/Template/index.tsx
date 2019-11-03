@@ -1,12 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext } from 'react';
 
-import { WrapperStyled, TitleStyled, InputStyled, ButtonStyled } from "./styles";
+import { WrapperStyled, TitleStyled, InputStyled, ButtonStyled } from './styles';
 
 function Template() {
-  const [title, setTitle] = useState<string>("");
-  const [priority, setPriority] = useState<string>("");
+  const [title, setTitle] = useState<string>('');
+  const [priority, setPriority] = useState<string>('');
   const [date, setDate] = useState<string>(Date);
-  const handleChange = useCallback(() => console.log("click"), []);
+  const handleChange = useCallback(() => console.log('click'), []);
+
   return (
     <WrapperStyled>
       <TitleStyled>Название</TitleStyled>

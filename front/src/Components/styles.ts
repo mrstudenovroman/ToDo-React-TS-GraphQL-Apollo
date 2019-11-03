@@ -1,9 +1,9 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const LayoutStyled = styled.div`
   min-width: 1160px;
   display: grid;
-  grid-template-areas: "Header" "Content";
+  grid-template-areas: 'Header' 'Content';
   grid-template-columns: 1fr;
   grid-auto-rows: 100px 1fr;
   grid-row-gap: 20px;

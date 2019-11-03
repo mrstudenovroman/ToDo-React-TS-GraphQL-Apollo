@@ -1,50 +1,54 @@
-import React from "react";
-import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-import { pageGenerate } from "./utils";
+import { pageGenerate, pageResolver } from './utils';
+import { PaginationProps } from './types';
+import { StyledPageBtn, StyledContainer } from './styles';
 
-const StyledContainer = styled.div`
-  display: flex;
-  box-shadow: 0 -6px 12px 0 rgba(25, 42, 70, 0.08);
-  background-color: #ffffff;
-`;
-
-const StyledPageBtn = styled.button`
-  display: flex;
-  background: #43e695;
-  padding: 5px;
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  &:first-child {
-    border-radius: 4px 0 0 4px;
-  }
-  &:last-child {
-    border-radius: 0 4px 4px 0;
-  }
-`;
-
-interface PaginationProps {
-  onClick: (page: number) => void;
-  currentPage: number;
-  totalPageNumber: number;
-  pageRange?: number;
-}
-
-function Pagination({
-  totalPageNumber,
-  onClick
-}: PaginationProps): JSX.Element {
+function Pagination({ totalPageNumber, onClick, currentPage }: PaginationProps): JSX.Element {
   const pages = pageGenerate(totalPageNumber);
+
+  const leftBtnControll = () => {
+    onClick(currentPage - 1);
+  };
+
+  const rightBtnControll = () => {
+    onClick(currentPage + 1);
+  };
+
+  const firstPage = pages[0];
+  const lastePage = pages[totalPageNumber - 1];
+  const leftBtnState = currentPage === 1;
+  const rightBtnState = currentPage === totalPageNumber;
+  const { pagesWithinRange, leftDots, rightDots } = pageResolver(pages, currentPage);
 
   return (
     <StyledContainer>
-      {pages.map(page => (
-        <StyledPageBtn key={page} onClick={() => onClick(page)}>
-          {page}
-        </StyledPageBtn>
-      ))}
+      <StyledPageBtn disabled={leftBtnState} onClick={leftBtnControll}>
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </StyledPageBtn>
+      <StyledPageBtn isActive={currentPage === firstPage} onClick={() => onClick(firstPage)}>
+        {firstPage}
+      </StyledPageBtn>
+      {leftDots && <StyledPageBtn>...</StyledPageBtn>}
+      {pagesWithinRange.map(page => {
+        if (page === lastePage || page === firstPage) {
+          return null;
+        }
+        return (
+          <StyledPageBtn isActive={currentPage === page} key={page} onClick={() => onClick(page)}>
+            {page}
+          </StyledPageBtn>
+        );
+      })}
+      {rightDots && <StyledPageBtn>...</StyledPageBtn>}
+      <StyledPageBtn isActive={currentPage === lastePage} onClick={() => onClick(lastePage)}>
+        {lastePage}
+      </StyledPageBtn>
+      <StyledPageBtn disabled={rightBtnState} onClick={rightBtnControll}>
+        <FontAwesomeIcon icon={faArrowRight} />
+      </StyledPageBtn>
     </StyledContainer>
   );
 }

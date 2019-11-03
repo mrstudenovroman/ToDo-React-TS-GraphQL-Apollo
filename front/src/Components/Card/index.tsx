@@ -1,13 +1,15 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from 'react';
 
-import { WrapperStyled, TitleStyled, TextStyled, ButtonStyled } from "./styles";
-import { TaskCardProps } from "./types";
-import { useMutation } from "@apollo/react-hooks";
+import { WrapperStyled, TitleStyled, TextStyled, InputStyled, ButtonStyled } from './styles';
+import { TaskCardProps } from './types';
+import { useMutation } from '@apollo/react-hooks';
 
-import DELETE_TASK from "../Task/graphql/deleteTask.gql";
-import GET_TASKS from "../Task/graphql/getTasks.gql";
+import UPDATE_TASK from '../Task/graphql/updateTask.gql';
+import DELETE_TASK from '../Task/graphql/deleteTask.gql';
+import GET_TASKS from '../Task/graphql/getTasks.gql';
 
 function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
+  const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK, {
     update(cache, { data: { deleteTask } }) {
       //  @ts-ignore
@@ -15,12 +17,28 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
       cache.writeQuery({
         query: GET_TASKS,
         //  @ts-ignore
-        data: { tasks: tasks.filter(({ id }) => id !== deleteTask.id) }
+        data: { tasks: tasks.filter(({ id }) => id !== deleteTask.id) },
       });
-    }
+    },
   });
 
-  const handleChangeTask = useCallback(() => console.log("change"), []);
+  const [isChangeTask, setChangeTask] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
+  const [newPriority, setNewPriority] = useState(priority);
+  const [newDeadline, setNewDeadLine] = useState(deadline);
+
+  const handleChangeTask = useCallback(() => {
+    updateTask({
+      variables: {
+        where: { id },
+        data: {
+          title: newTitle,
+          priority: newPriority,
+          deadline: newDeadline,
+        },
+      },
+    }).then(() => setChangeTask(false));
+  }, []);
   const handleDeleteTask = useCallback(() => {
     deleteTask({ variables: { where: { id } } });
   }, []);
@@ -28,14 +46,32 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
   return (
     <WrapperStyled>
       <TitleStyled>Название</TitleStyled>
-      <TextStyled>{title}</TextStyled>
+      {isChangeTask ? (
+        <InputStyled type="text" value={newTitle} onChange={({ target }) => setNewTitle(target.value)} />
+      ) : (
+        <TextStyled>{title}</TextStyled>
+      )}
       <TitleStyled>Приоритет</TitleStyled>
-      <TextStyled>{priority}</TextStyled>
+      {isChangeTask ? (
+        <InputStyled type="number" value={newPriority} onChange={({ target }) => setNewPriority(target.value)} />
+      ) : (
+        <TextStyled>{priority}</TextStyled>
+      )}
       <TitleStyled>Дедлайн</TitleStyled>
-      <TextStyled>{deadline}</TextStyled>
-      <ButtonStyled type="button" onClick={handleChangeTask}>
-        Редактировать задачу
-      </ButtonStyled>
+      {isChangeTask ? (
+        <InputStyled type="date" value={newDeadline} onChange={({ target }) => setNewDeadLine(target.value)} />
+      ) : (
+        <TextStyled>{deadline}</TextStyled>
+      )}
+      {isChangeTask ? (
+        <ButtonStyled type="button" onClick={handleChangeTask}>
+          Сохранить
+        </ButtonStyled>
+      ) : (
+        <ButtonStyled type="button" onClick={() => setChangeTask(true)}>
+          Редактировать задачу
+        </ButtonStyled>
+      )}
       <ButtonStyled type="button" onClick={handleDeleteTask}>
         Удалить задачу
       </ButtonStyled>

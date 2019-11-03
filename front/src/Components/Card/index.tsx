@@ -27,18 +27,21 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
   const [newPriority, setNewPriority] = useState(priority);
   const [newDeadline, setNewDeadLine] = useState(deadline);
 
-  const handleChangeTask = useCallback(() => {
-    updateTask({
-      variables: {
-        where: { id },
-        data: {
-          title: newTitle,
-          priority: newPriority,
-          deadline: newDeadline,
+  const handleChangeTask = useCallback(
+    () => {
+      updateTask({
+        variables: {
+          where: { id },
+          data: {
+            title: newTitle,
+            priority: +newPriority,
+            deadline: newDeadline,
+          },
         },
-      },
-    }).then(() => setChangeTask(false));
-  }, []);
+      }).then(() => setChangeTask(false));
+    },
+    [newTitle, newPriority, newDeadline],
+  );
   const handleDeleteTask = useCallback(() => {
     deleteTask({ variables: { where: { id } } });
   }, []);

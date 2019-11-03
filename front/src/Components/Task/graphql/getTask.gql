@@ -1,7 +1,0 @@
-query getTask($id: ID!) {
-  task(where: { id: $id }) {
-    id
-    deadline
-    title
-  }
-}

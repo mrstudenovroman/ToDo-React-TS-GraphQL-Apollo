@@ -9,13 +9,19 @@ import { StyledPageBtn, StyledContainer } from './styles';
 function Pagination({ totalPageNumber, onClick, currentPage }: PaginationProps): JSX.Element {
   const pages = pageGenerate(totalPageNumber);
 
-  const leftBtnControll = useCallback(() => {
-    onClick(currentPage - 1);
-  }, [currentPage, onClick]);
+  const leftBtnControll = useCallback(
+    () => {
+      onClick(currentPage - 1);
+    },
+    [currentPage, onClick],
+  );
 
-  const rightBtnControll = useCallback(() => {
-    onClick(currentPage + 1);
-  }, [currentPage, onClick]);
+  const rightBtnControll = useCallback(
+    () => {
+      onClick(currentPage + 1);
+    },
+    [currentPage, onClick],
+  );
 
   const firstPage = pages[0];
   const lastePage = pages[totalPageNumber - 1];
@@ -34,11 +40,14 @@ function Pagination({ totalPageNumber, onClick, currentPage }: PaginationProps):
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('keydown', handleArrowKeyPress);
+  useEffect(
+    () => {
+      window.addEventListener('keydown', handleArrowKeyPress);
 
-    return () => window.removeEventListener('keydown', handleArrowKeyPress);
-  }, [handleArrowKeyPress]);
+      return () => window.removeEventListener('keydown', handleArrowKeyPress);
+    },
+    [handleArrowKeyPress],
+  );
   return (
     <StyledContainer>
       <StyledPageBtn disabled={leftBtnState} onClick={leftBtnControll}>

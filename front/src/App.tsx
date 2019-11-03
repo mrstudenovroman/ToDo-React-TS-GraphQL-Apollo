@@ -2,12 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { hot } from 'react-hot-loader/root';
+import { secondatyTheme, defaultTheme } from 'themes';
+
+import Layout from 'Components';
+import SwitchBtn from 'Components/SwitchButton';
 
 import { client } from './client';
-import Layout from 'Components';
-import SwithBtn from 'Components/SwitchButton';
-import { secondatyTheme, defaultTheme } from 'themes';
-import SwitchBtn from 'Components/SwitchButton';
 
 const InjectGlobalStyle = createGlobalStyle`
     * {

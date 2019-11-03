@@ -1,12 +1,11 @@
 import React from 'react';
-
-import Template from './Template';
-import TaskCard from './Card';
-import { LayoutStyled, HeaderStyled, TitleStyled, ContentStyled } from './styles';
 import { useQuery } from '@apollo/react-hooks';
 
-import GET_TASKS from 'Components/Task/graphql/getTasks.gql';
+import GET_TASKS from './gql/getTasks.gql';
+import Template from './Template';
+import TaskCard from './Card';
 import { TaskCardProps } from './Card/types';
+import { LayoutStyled, HeaderStyled, TitleStyled, ContentStyled } from './styles';
 
 function Layout() {
   const { data, loading, error } = useQuery(GET_TASKS);

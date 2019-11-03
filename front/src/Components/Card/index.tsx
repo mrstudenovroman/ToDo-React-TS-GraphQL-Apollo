@@ -1,25 +1,17 @@
 import React, { useCallback, useState } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+
+import UPDATE_TASK from './gql/updateTask.gql';
+import DELETE_TASK from './gql/deleteTask.gql';
 
 import { WrapperStyled, TitleStyled, TextStyled, InputStyled, ButtonStyled } from './styles';
 import { TaskCardProps } from './types';
-import { useMutation } from '@apollo/react-hooks';
-
-import UPDATE_TASK from '../Task/graphql/updateTask.gql';
-import DELETE_TASK from '../Task/graphql/deleteTask.gql';
-import GET_TASKS from '../Task/graphql/getTasks.gql';
 
 function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
   const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK, {
-    update(cache, { data: { deleteTask } }) {
-      //  @ts-ignore
-      const { tasks } = cache.readQuery({ query: GET_TASKS });
-      cache.writeQuery({
-        query: GET_TASKS,
-        //  @ts-ignore
-        data: { tasks: tasks.filter(({ id }) => id !== deleteTask.id) },
-      });
-    },
+    variables: { where: { id } },
+    refetchQueries: ['getTasks'],
   });
 
   const [isChangeTask, setChangeTask] = useState(false);

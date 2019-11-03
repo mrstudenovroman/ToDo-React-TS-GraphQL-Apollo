@@ -1,12 +1,35 @@
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useMutation } from '@apollo/react-hooks';
+
+import CREATE_TASK from './gql/createTask.gql';
 
 import { WrapperStyled, TitleStyled, InputStyled, ButtonStyled } from './styles';
+import { CreateTaskMutationProps } from './types';
 
 function Template() {
+  const [createTask] = useMutation<CreateTaskMutationProps>(CREATE_TASK, {
+    refetchQueries: ['getTasks'],
+  });
   const [title, setTitle] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
-  const [date, setDate] = useState<string>(Date);
-  const handleChange = useCallback(() => console.log('click'), []);
+  const [date, setDate] = useState<string>('');
+  const handleChange = useCallback(
+    async () => {
+      await createTask({
+        variables: {
+          data: {
+            title,
+            priority: +priority,
+            deadline: date,
+          },
+        },
+      });
+      setTitle('');
+      setPriority('');
+      setDate('');
+    },
+    [title, priority, date],
+  );
 
   return (
     <WrapperStyled>

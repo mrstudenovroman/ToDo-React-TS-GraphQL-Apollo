@@ -1,0 +1,16 @@
+query getTasks(
+  $where: TaskWhereInput
+  $orderBy: TaskOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  tasks(where: $where, orderBy: $orderBy, skip: $skip, after: $after, before: $before, first: $first, last: $last) {
+    id
+    deadline
+    priority
+    title
+  }
+}

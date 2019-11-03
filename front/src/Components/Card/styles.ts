@@ -30,6 +30,23 @@ export const TextStyled = styled.p`
   text-align: left;
 `;
 
+export const InputStyled = styled.input`
+  width: 100%;
+  height: 40px;
+  margin: 0 0 15px 0;
+  padding: 5px 5px 0 5px;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #bbbbbb;
+  font-size: 18px;
+  color: #16273a;
+
+  &:hover,
+  &:focus {
+    border-bottom: 2px solid rgba(59, 178, 184, 0.55);
+  }
+`;
+
 export const ButtonStyled = styled.button`
   width: 250px;
   height: 40px;

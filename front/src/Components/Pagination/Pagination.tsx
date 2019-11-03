@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,13 +9,13 @@ import { StyledPageBtn, StyledContainer } from './styles';
 function Pagination({ totalPageNumber, onClick, currentPage }: PaginationProps): JSX.Element {
   const pages = pageGenerate(totalPageNumber);
 
-  const leftBtnControll = () => {
+  const leftBtnControll = useCallback(() => {
     onClick(currentPage - 1);
-  };
+  }, [currentPage, onClick]);
 
-  const rightBtnControll = () => {
+  const rightBtnControll = useCallback(() => {
     onClick(currentPage + 1);
-  };
+  }, [currentPage, onClick]);
 
   const firstPage = pages[0];
   const lastePage = pages[totalPageNumber - 1];
@@ -23,6 +23,22 @@ function Pagination({ totalPageNumber, onClick, currentPage }: PaginationProps):
   const rightBtnState = currentPage === totalPageNumber;
   const { pagesWithinRange, leftDots, rightDots } = pageResolver(pages, currentPage);
 
+  const handleArrowKeyPress = (e: KeyboardEvent) => {
+    const { keyCode } = e;
+    if (keyCode === 37) {
+      onClick(currentPage - 1);
+    }
+
+    if (keyCode === 39) {
+      onClick(currentPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleArrowKeyPress);
+
+    return () => window.removeEventListener('keydown', handleArrowKeyPress);
+  }, [handleArrowKeyPress]);
   return (
     <StyledContainer>
       <StyledPageBtn disabled={leftBtnState} onClick={leftBtnControll}>

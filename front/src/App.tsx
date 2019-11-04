@@ -9,18 +9,18 @@ import Layout from 'Components';
 import { client } from './client';
 
 const InjectGlobalStyle = createGlobalStyle`
-    * {
-      box-sizing: border-box;
-      font-family: Rubik, sans-serif;
-    }
+  * {
+    box-sizing: border-box;
+    font-family: Rubik, sans-serif;
+  }
 
-    body {
-        margin: 0;
-    }
+  body {
+      margin: 0;
+  }
 `;
 
 function App() {
-  const [mainTheme, themeToggle] = useState(false);
+  const [mainTheme, themeToggle] = useState(true);
 
   const handleTheme = useCallback(
     () => {

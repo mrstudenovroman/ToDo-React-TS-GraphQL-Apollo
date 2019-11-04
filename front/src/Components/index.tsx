@@ -1,11 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import dayjs from 'dayjs';
 
-import GET_TASKS from './gql/getTasks.gql';
 import SwitchBtn from './SwitchButton';
 import Template from './Template';
-import TaskCard from './Card';
 import {
   LayoutStyled,
   HeaderStyled,
@@ -17,18 +13,19 @@ import {
 } from './styles';
 import Pagination from './Pagination';
 import Input from './Input';
-import { LayoutProps, TasksQueryProps } from './types';
+import { LayoutProps } from './types';
+import Tasks from './Tasks';
 
 function Layout({ handleTheme }: LayoutProps) {
   const [deadlineTodayFilter, setDeadlineTodayFilter] = useState<boolean>(false);
   const [titleFilter, setTitleFilter] = useState<string>('');
+  const [currentPage, switchPage] = useState<number>(0);
 
   const toggleDeadlineTodayFilter = useCallback(() => setDeadlineTodayFilter(!deadlineTodayFilter), [
     deadlineTodayFilter,
   ]);
 
   const handleSetTitleFilter = useCallback(({ target: { value } }): void => setTitleFilter(value), []);
-  const [currentPage, switchPage] = useState<number>(0);
 
   const handleSwitchPage = useCallback(
     (pageFromComponent: number) => {
@@ -41,35 +38,6 @@ function Layout({ handleTheme }: LayoutProps) {
   const pageRange = 5;
   const itemsToSkip = pageRange * currentPage;
   const currentPageToComponent = currentPage + 1;
-
-  const { data, loading, error } = useQuery<TasksQueryProps>(GET_TASKS, {
-    variables: {
-      skip: deadlineTodayFilter || titleFilter ? undefined : itemsToSkip,
-      first: deadlineTodayFilter || titleFilter ? undefined : itemsToSkip + pageRange,
-    },
-  });
-
-  if (loading) return <div>...loading</div>;
-  if (error) return <p>ERROR: {error.message}</p>;
-
-  let tasksFiltered = data!.tasks;
-
-  if (deadlineTodayFilter || titleFilter) {
-    tasksFiltered = tasksFiltered.filter(({ title, deadline }) => {
-      if (
-        deadlineTodayFilter &&
-        !(dayjs(deadline) > dayjs().startOf('day') && dayjs(deadline) < dayjs().endOf('day'))
-      ) {
-        return false;
-      }
-
-      if (titleFilter && !title.includes(titleFilter)) {
-        return false;
-      }
-
-      return true;
-    });
-  }
 
   return (
     <LayoutStyled>
@@ -100,10 +68,19 @@ function Layout({ handleTheme }: LayoutProps) {
       </HeaderStyled>
       <ContentStyled>
         <Template />
-        {tasksFiltered.map(({ id, deadline, title, priority }) => (
-          <TaskCard key={id} id={id} deadline={deadline} priority={priority} title={title} />
-        ))}
-        {!(titleFilter || deadlineTodayFilter) && <Pagination onClick={handleSwitchPage} currentPage={currentPageToComponent} pageRange={pageRange} />}
+        <Tasks
+          pageRange={pageRange}
+          itemsToSkip={itemsToSkip}
+          filterDeadline={deadlineTodayFilter}
+          filterTitle={!!titleFilter ? titleFilter : undefined}
+        />
+        <Pagination
+          onClick={handleSwitchPage}
+          filterDeadline={deadlineTodayFilter}
+          filterTitle={!!titleFilter ? titleFilter : undefined}
+          currentPage={currentPageToComponent}
+          pageRange={pageRange}
+        />
       </ContentStyled>
     </LayoutStyled>
   );

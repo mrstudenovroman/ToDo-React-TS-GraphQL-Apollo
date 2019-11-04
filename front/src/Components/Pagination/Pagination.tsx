@@ -7,9 +7,19 @@ import { pageGenerate, pageResolver } from './utils';
 import { PaginationProps, TasksCountProps } from './types';
 import { StyledPageBtn, StyledContainer } from './styles';
 import GET_TASK_COUNT from './gql/getTaskCount.gql';
+import dayjs from "dayjs";
 
-function Pagination({ onClick, currentPage, pageRange = 5 }: PaginationProps): JSX.Element {
-  const { data, loading, error } = useQuery<TasksCountProps>(GET_TASK_COUNT);
+function Pagination({ onClick, currentPage, pageRange = 5, filterDeadline, filterTitle }: PaginationProps): JSX.Element {
+  const { data, loading, error } = useQuery<TasksCountProps>(GET_TASK_COUNT, {
+    variables: {
+      where: {
+        title_contains: filterTitle,
+        deadline_gt: filterDeadline ? dayjs().startOf('day') : undefined,
+        deadline_lt: filterDeadline ? dayjs().endOf('day') : undefined,
+      }
+    }
+  });
+
   const totalPageNumber = (data && Math.ceil(data.tasksConnection.aggregate.count / pageRange)) || 0;
 
   const pages = pageGenerate(totalPageNumber);

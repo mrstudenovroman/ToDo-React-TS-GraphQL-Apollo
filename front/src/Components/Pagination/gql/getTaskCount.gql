@@ -1,0 +1,23 @@
+query getTasksCount(
+  $where: TaskWhereInput
+  $orderBy: TaskOrderByInput
+  $skip: Int
+  $after: String
+  $before: String
+  $first: Int
+  $last: Int
+) {
+  tasksConnection(
+    where: $where
+    orderBy: $orderBy
+    skip: $skip
+    after: $after
+    before: $before
+    first: $first
+    last: $last
+  ) {
+    aggregate {
+      count
+    }
+  }
+}

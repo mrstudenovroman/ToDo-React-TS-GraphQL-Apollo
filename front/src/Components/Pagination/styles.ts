@@ -4,8 +4,9 @@ import { StyledBtnProps } from './types';
 
 export const StyledContainer = styled.div`
   display: flex;
-  box-shadow: 0 -6px 12px 0 rgba(25, 42, 70, 0.08);
-  background-color: #ffffff;
+  background-color: transparent;
+  box-shadow: 0 8px 8px 0 rgba(25, 42, 70, 0.1);
+  border-radius: 34px;
 `;
 
 const ActiveBtnStyles = css`

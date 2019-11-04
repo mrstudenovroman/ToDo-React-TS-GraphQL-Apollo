@@ -14,7 +14,7 @@ function Template() {
   const [valid, setValid] = useState<boolean>(false);
 
   const [createTask] = useMutation<CreateTaskMutationProps>(CREATE_TASK, {
-    refetchQueries: ['getTasks'],
+    refetchQueries: ['getTasks', 'getTasksCount'],
     variables: {
       data: {
         title,
@@ -24,29 +24,23 @@ function Template() {
     },
   });
 
-  useEffect(
-    () => {
-      if (!valid && title.length && +priority > 0 && date.length) {
-        setValid(true);
-      } else if (valid) {
-        setValid(false);
-      }
-    },
-    [date, priority, title],
-  );
+  useEffect(() => {
+    if (!valid && title.length && +priority > 0 && date.length) {
+      setValid(true);
+    } else if (valid) {
+      setValid(false);
+    }
+  }, [date, priority, title]);
 
-  const handleCreateTask = useCallback(
-    async () => {
-      if (!valid) {
-        return window.alert('Заполните, пожалуйста, все поля для создания новой задачи');
-      }
-      await createTask();
-      setTitle('');
-      setPriority('');
-      setDate('');
-    },
-    [title, priority, date, valid],
-  );
+  const handleCreateTask = useCallback(async () => {
+    if (!valid) {
+      return window.alert('Заполните, пожалуйста, все поля для создания новой задачи');
+    }
+    await createTask();
+    setTitle('');
+    setPriority('');
+    setDate('');
+  }, [title, priority, date, valid]);
 
   const handleChange = useCallback(
     (fieldName: string) => ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {

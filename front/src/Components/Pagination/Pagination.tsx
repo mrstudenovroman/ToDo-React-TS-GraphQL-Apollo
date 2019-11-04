@@ -48,6 +48,7 @@ function Pagination({ onClick, currentPage, pageRange = 5 }: PaginationProps): J
 
     return () => window.removeEventListener('keydown', handleArrowKeyPress);
   }, [handleArrowKeyPress]);
+
   if (loading) {
     return <p>'Loading...'</p>;
   }

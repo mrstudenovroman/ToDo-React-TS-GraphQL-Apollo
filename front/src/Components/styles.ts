@@ -24,8 +24,20 @@ export const WrapperButtonStyled = styled.div`
   align-items: center;
 `;
 
+export const WrapperFiltersStyled = styled(WrapperButtonStyled)`
+  flex-direction: column;
+`;
+
+export const FilterSectionStyled = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+
 export const TitleStyled = styled.h1`
   font-size: 40px;
+  display: flex;
+  align-items: center;
   margin: 0;
 `;
 

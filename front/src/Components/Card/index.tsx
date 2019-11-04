@@ -5,11 +5,16 @@ import { formattingDate } from 'helpers';
 import UPDATE_TASK from './gql/updateTask.gql';
 import DELETE_TASK from './gql/deleteTask.gql';
 
-import { WrapperStyled, TitleStyled, TextStyled, InputStyled, ButtonStyled } from './styles';
+import { WrapperStyled, TextStyled } from './styles';
 import { TaskCardProps } from './types';
+
+import Input from 'Components/Input';
+import Button from 'Components/Button';
+import Label from '../Label';
 
 function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
   const formatDate = useMemo(() => formattingDate(deadline), [deadline]);
+
   const [changeTask, setChangeTask] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [newPriority, setNewPriority] = useState(priority);
@@ -72,15 +77,16 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
 
   return (
     <WrapperStyled>
-      <TitleStyled>Название</TitleStyled>
+      <Label htmlFor={`title-${id}`}>Название</Label>
       {changeTask ? (
-        <InputStyled type="text" value={newTitle} onChange={handleChange('title')} />
+        <Input id={`title-${id}`} type="text" value={newTitle} onChange={handleChange('title')} />
       ) : (
         <TextStyled>{title}</TextStyled>
       )}
-      <TitleStyled>Приоритет</TitleStyled>
+      <Label htmlFor={`priority-${id}`}>Приоритет</Label>
       {changeTask ? (
-        <InputStyled
+        <Input
+          id={`priority-${id}`}
           type="number"
           min="1"
           max="9"
@@ -91,24 +97,18 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
       ) : (
         <TextStyled>{priority}</TextStyled>
       )}
-      <TitleStyled>Дедлайн</TitleStyled>
+      <Label htmlFor={`date-${id}`}>Дедлайн</Label>
       {changeTask ? (
-        <InputStyled type="date" value={newDate} onChange={handleChange('date')} />
+        <Input id={`date-${id}`} type="date" value={newDate} onChange={handleChange('date')} />
       ) : (
         <TextStyled>{formatDate}</TextStyled>
       )}
       {changeTask ? (
-        <ButtonStyled type="button" onClick={handleUpdateTask}>
-          Сохранить
-        </ButtonStyled>
+        <Button onClick={handleUpdateTask}>Сохранить</Button>
       ) : (
-        <ButtonStyled type="button" onClick={handleToggleChangeTask}>
-          Редактировать задачу
-        </ButtonStyled>
+        <Button onClick={handleToggleChangeTask}>Редактировать задачу</Button>
       )}
-      <ButtonStyled type="button" onClick={handleDeleteTask}>
-        Удалить задачу
-      </ButtonStyled>
+      <Button onClick={handleDeleteTask}>Удалить задачу</Button>
     </WrapperStyled>
   );
 }

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { hot } from 'react-hot-loader/root';
-import { secondatyTheme, defaultTheme } from 'themes';
+import { secondaryTheme, defaultTheme } from 'themes';
 
 import Layout from 'Components';
 
@@ -15,7 +15,12 @@ const InjectGlobalStyle = createGlobalStyle`
   }
 
   body {
-      margin: 0;
+    margin: 0;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
 `;
 
@@ -30,7 +35,7 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={mainTheme ? defaultTheme : secondatyTheme}>
+    <ThemeProvider theme={mainTheme ? defaultTheme : secondaryTheme}>
       <ApolloProvider client={client}>
         <InjectGlobalStyle />
         <Layout handleTheme={handleTheme} />

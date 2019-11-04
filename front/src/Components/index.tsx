@@ -42,7 +42,7 @@ function Layout({ handleTheme }: LayoutProps) {
           <span>Сменить цвет</span>
         </WrapperButtonStyled>
         <TitleStyled>YATL</TitleStyled>
-        <Pagination onClick={handleSwitchPage} currentPage={currentPageToComponent} />
+        <Pagination onClick={handleSwitchPage} currentPage={currentPageToComponent} pageRange={pageRange} />
       </HeaderStyled>
       <ContentStyled>
         <Template />

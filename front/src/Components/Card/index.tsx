@@ -23,7 +23,7 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
 
   const [deleteTask] = useMutation(DELETE_TASK, {
     variables: { where: { id } },
-    refetchQueries: ['getTasks'],
+    refetchQueries: ['getTasks', 'getTasksCount'],
   });
 
   const [updateTask] = useMutation(UPDATE_TASK, {
@@ -39,27 +39,21 @@ function TaskCard({ id, title, priority, deadline }: TaskCardProps) {
 
   const handleToggleChangeTask = useCallback(() => setChangeTask(!changeTask), [changeTask]);
 
-  const handleUpdateTask = useCallback(
-    async () => {
-      if (!valid) {
-        return window.alert('Для изменения задачи все поля должны быть заполнены');
-      }
-      await updateTask();
-      handleToggleChangeTask();
-    },
-    [newTitle, newPriority, newDate, valid],
-  );
+  const handleUpdateTask = useCallback(async () => {
+    if (!valid) {
+      return window.alert('Для изменения задачи все поля должны быть заполнены');
+    }
+    await updateTask();
+    handleToggleChangeTask();
+  }, [newTitle, newPriority, newDate, valid]);
 
-  useEffect(
-    () => {
-      if (!valid && newTitle.length && +newPriority > 0 && newDate.length) {
-        setValid(true);
-      } else if (valid && (!newTitle.length || +newPriority === 0 || !newDate.length)) {
-        setValid(false);
-      }
-    },
-    [newDate, newPriority, newTitle],
-  );
+  useEffect(() => {
+    if (!valid && newTitle.length && +newPriority > 0 && newDate.length) {
+      setValid(true);
+    } else if (valid && (!newTitle.length || +newPriority === 0 || !newDate.length)) {
+      setValid(false);
+    }
+  }, [newDate, newPriority, newTitle]);
 
   const handleChange = useCallback(
     (fieldName: string) => ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {

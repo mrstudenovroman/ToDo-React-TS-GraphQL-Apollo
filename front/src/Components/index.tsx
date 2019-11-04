@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import dayjs from 'dayjs';
 
@@ -15,8 +15,9 @@ import {
   WrapperFiltersStyled,
   FilterSectionStyled,
 } from './styles';
-import { LayoutProps, TasksQueryProps } from './types';
+import Pagination from './Pagination';
 import Input from './Input';
+import { LayoutProps, TasksQueryProps } from './types';
 
 function Layout({ handleTheme }: LayoutProps) {
   const [deadlineTodayFilter, setDeadlineTodayFilter] = useState<boolean>(false);
@@ -25,9 +26,28 @@ function Layout({ handleTheme }: LayoutProps) {
   const toggleDeadlineTodayFilter = useCallback(() => setDeadlineTodayFilter(!deadlineTodayFilter), [
     deadlineTodayFilter,
   ]);
-  const handleSetTitleFilter = useCallback(({ target: { value } }): void => setTitleFilter(value), []);
 
-  const { data, loading, error } = useQuery<TasksQueryProps>(GET_TASKS);
+  const handleSetTitleFilter = useCallback(({ target: { value } }): void => setTitleFilter(value), []);
+  const [currentPage, switchPage] = useState<number>(0);
+
+  const handleSwitchPage = useCallback(
+    (pageFromComponent: number) => {
+      const page = pageFromComponent - 1;
+      switchPage(page);
+    },
+    [currentPage, switchPage],
+  );
+
+  const pageRange = 5;
+  const itemsToSkip = pageRange * currentPage;
+  const currentPageToComponent = currentPage + 1;
+
+  const { data, loading, error } = useQuery<TasksQueryProps>(GET_TASKS, {
+    variables: {
+      skip: deadlineTodayFilter || titleFilter ? undefined : itemsToSkip,
+      first: deadlineTodayFilter || titleFilter ? undefined : itemsToSkip + pageRange,
+    },
+  });
 
   if (loading) return <div>...loading</div>;
   if (error) return <p>ERROR: {error.message}</p>;
@@ -83,6 +103,7 @@ function Layout({ handleTheme }: LayoutProps) {
         {tasksFiltered.map(({ id, deadline, title, priority }) => (
           <TaskCard key={id} id={id} deadline={deadline} priority={priority} title={title} />
         ))}
+        {!(titleFilter || deadlineTodayFilter) && <Pagination onClick={handleSwitchPage} currentPage={currentPageToComponent} pageRange={pageRange} />}
       </ContentStyled>
     </LayoutStyled>
   );

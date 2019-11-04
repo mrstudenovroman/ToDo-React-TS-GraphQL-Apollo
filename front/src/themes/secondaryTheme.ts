@@ -3,5 +3,7 @@ export const secondaryTheme = {
   backgroundSecondary: 'linear-gradient(110deg, #12333f -49%, #ffff95 75%)',
   buttonBorderHover: 'rgba(59, 18, 185, 0.35)',
   buttonColorHover: 'rgba(109, 200, 185, 0.9)',
+  paginationBackground: 'rgba(59, 18, 185, 0.35)',
+  paginationActiveBackground: '#3bb2b8',
   color: 'blue',
 };

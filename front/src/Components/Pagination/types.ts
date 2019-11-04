@@ -2,6 +2,8 @@ export interface PaginationProps {
   onClick: (page: number) => void;
   currentPage: number;
   pageRange?: number;
+  filterDeadline?: boolean;
+  filterTitle?: string;
 }
 
 export interface StyledBtnProps {

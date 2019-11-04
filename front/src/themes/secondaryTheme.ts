@@ -4,6 +4,6 @@ export const secondaryTheme = {
   buttonBorderHover: 'rgba(59, 18, 185, 0.35)',
   buttonColorHover: 'rgba(109, 200, 185, 0.9)',
   paginationBackground: 'rgba(59, 18, 185, 0.35)',
-  paginationActiveBackground: '#3bb2b8',
+  paginationActiveBackground: 'rgba(59, 18, 185, 0.5)',
   color: 'blue',
 };

@@ -1,2 +1,2 @@
-export { defaultTheme } from './defualtTheme';
-export { secondatyTheme } from './secondaryTheme';
+export { defaultTheme } from './defaultTheme';
+export { secondaryTheme } from './secondaryTheme';
